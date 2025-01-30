@@ -35,5 +35,5 @@ Ensure you have **Python 3.8+**, **Git**, and **pip** installed.
 ### Steps  
 1. Clone the repository:  
    ```bash
-   git clone https://github.com/your-username/lung-segmentation.git
-   cd lung-segmentation
+   git clone https://github.com/Mohammed-Hamras-Sulaiman/Medical-Image--Segmentation.git
+   
