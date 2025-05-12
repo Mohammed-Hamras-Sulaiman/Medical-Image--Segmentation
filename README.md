@@ -128,19 +128,5 @@ Check out the video demonstration of the lung segmentation process in the projec
 
 ---
 
-### 📂 Project Structure
-
-```
-Medical-Image--Segmentation/
-├── segmentation/          # App logic for segmentation
-├── templates/             # HTML templates
-├── static/                # CSS/JS assets
-├── media/                 # Uploaded/segmented images
-├── models/                # Pre-trained ML models
-├── video/                 # Add your demo video here
-├── db.sqlite3             # Default database
-├── manage.py
-└── requirements.txt
-```
 
 
