@@ -1,3 +1,5 @@
+
+
 ## 🧠 Medical Image Segmentation Using Deep Learning
 
 ### 📌 Overview
@@ -118,6 +120,14 @@ Use these credentials to log in and test the system functionality.
 
 ---
 
+### 🎥 Video Demo
+
+Check out the video demonstration of the lung segmentation process in the project:
+
+![Lung Segmentation Demo](video/demo.mp4.gif)
+
+---
+
 ### 📂 Project Structure
 
 ```
@@ -132,4 +142,5 @@ Medical-Image--Segmentation/
 ├── manage.py
 └── requirements.txt
 ```
+
 
