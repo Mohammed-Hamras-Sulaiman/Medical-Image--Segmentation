@@ -1,0 +1,251 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Medical Image Segmentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            background-color: #f3f4f6;
+            color: #1f2a44;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            background-color: #1e3a8a;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin: 0;
+        }
+
+        /* Main Container */
+        main {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            background: linear-gradient(rgba(243, 244, 246, 0.9), rgba(243, 244, 246, 0.9)), url('{% static "images/mri-background.jpg" %}');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .login-container {
+            max-width: 400px;
+            width: 100%;
+            background: #ffffff;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e5e7eb;
+        }
+
+        .login-container h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e3a8a;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .error-message, .info-message {
+            padding: 0.75rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 0.875rem;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .info-message {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #1f2a44;
+        }
+
+        input {
+            padding: 0.75rem;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            color: #1f2a44;
+            outline: none;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .submit-btn {
+            background-color: #3b82f6;
+            color: #ffffff;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .submit-btn:hover {
+            background-color: #2563eb;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1e3a8a;
+            color: #ffffff;
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+        }
+
+        footer p {
+            font-size: 0.875rem;
+            margin: 0.25rem 0;
+        }
+
+        footer a {
+            color: #bfdbfe;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            main {
+                padding: 1.5rem;
+            }
+
+            .login-container {
+                padding: 1.5rem;
+            }
+
+            .login-container h2 {
+                font-size: 1.25rem;
+            }
+
+            input, .submit-btn {
+                padding: 0.65rem;
+                font-size: 0.875rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            main {
+                padding: 1rem;
+            }
+
+            .login-container {
+                padding: 1rem;
+            }
+
+            .login-container h2 {
+                font-size: 1.125rem;
+            }
+
+            input, .submit-btn {
+                padding: 0.5rem;
+                font-size: 0.75rem;
+            }
+
+            footer p {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>Medical Image Segmentation</h1>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <div class="login-container">
+            <h2>Login</h2>
+
+            {% if form.errors %}
+                <div class="error-message">
+                    <p>Your username or password didn't match. Please try again.</p>
+                </div>
+            {% endif %}
+
+            {% if next %}
+                <div class="info-message">
+                    <p>Please login to access this page.</p>
+                </div>
+            {% endif %}
+
+            <form method="post" class="login-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" name="username" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" id="password" required>
+                </div>
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 Medical Image Segmentation Platform. All rights reserved.</p>
+        <p>Contact: <a href="mailto:support@mrisegmentation.com">support@mrisegmentation.com</a></p>
+    </footer>
+</body>
+</html>

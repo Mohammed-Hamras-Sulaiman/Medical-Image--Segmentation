@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRI Image Segmentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Reset default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            background-color: #e9ecef;
+            color: #2d3748;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            background-color: #1a3c6d;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header img.logo {
+            height: 40px;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: #a5b4fc;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 700px;
+            margin: 2rem auto;
+            background: #fff;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            background-image: linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)), url('/static/images/mri-background.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        /* Heading and Description */
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1a3c6d;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .description {
+            font-size: 1rem;
+            color: #4b5563;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Form Styling */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        label {
+            font-weight: 500;
+            color: #2d3748;
+            font-size: 0.95rem;
+        }
+
+        input[type="file"] {
+            padding: 0.75rem;
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            background-color: #f9fafb;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="file"]:hover {
+            border-color: #3b82f6;
+        }
+
+        input[type="file"]:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Image Preview */
+        .image-preview {
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .image-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            display: none;
+        }
+
+        /* Button */
+        button {
+            background-color: #3b82f6;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.1s ease;
+        }
+
+        button:hover {
+            background-color: #2563eb;
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        button.loading::after {
+            content: '';
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid #fff;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin-left: 0.5rem;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Error Messages */
+        .errorlist {
+            list-style: none;
+            background-color: #fee2e2;
+            padding: 1rem;
+            border-radius: 8px;
+            color: #dc2626;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .errorlist li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Link Styling */
+        a {
+            display: inline-block;
+            margin-top: 1rem;
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: #2563eb;
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1a3c6d;
+            color: #fff;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: auto;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: #a5b4fc;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            color: #fff;
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+
+            h1 {
+                font-size: 1.6rem;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            button {
+                padding: 0.65rem 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <img src="/static/images/mri-logo.png" alt="MRI Segmentation Logo" class="logo">
+        <nav>
+            <ul>
+                <li><a href="{% url 'segmentation:upload_image' %}">Home</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>MRI Image Segmentation</h1>
+        <p class="description">
+            Upload an MRI Lungs scan to analyze and segment regions of interest using our advanced AI model. Supported formats: PNG, JPG, JPEG (max 5MB).
+        </p>
+        {% if form.errors %}
+        <ul class="errorlist">
+            {% for field, errors in form.errors.items %}
+                {% for error in errors %}
+                    <li>{{ field|capfirst }}: {{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+        {% endif %}
+        <form action="{% url 'segmentation:upload_image' %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="image">Select MRI Image</label>
+                <input type="file" id="image" name="image" accept=".png,.jpg,.jpeg" required>
+                <div class="image-preview">
+                    <img id="preview" src="#" alt="Image Preview">
+                </div>
+            </div>
+            <button type="submit">Upload and Segment</button>
+        </form>
+        <a href="{% url 'segmentation:upload_image' %}">Upload Another Image</a>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 MRI Segmentation Platform HDash; All rights reserved.</p>
+        <p>Contact: <a href="mailto:support@mrisegmentation.com">support@mrisegmentation.com</a></p>
+    </footer>
+
+    <script>
+        // Form handling, validation, and image preview
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.querySelector('form');
+            const fileInput = document.querySelector('input[type="file"]');
+            const submitButton = document.querySelector('button[type="submit"]');
+            const previewImg = document.querySelector('#preview');
+
+            // Image preview
+            fileInput.addEventListener('change', () => {
+                const file = fileInput.files[0];
+                const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+                const maxSize = 5 * 1024 * 1024; // 5MB
+
+                if (file && allowedTypes.includes(file.type) && file.size <= maxSize) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        previewImg.src = e.target.result;
+                        previewImg.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    previewImg.style.display = 'none';
+                }
+            });
+
+            // Validate file type and size before submission
+            form.addEventListener('submit', (e) => {
+                const file = fileInput.files[0];
+                const allowedTypes = ['image/png', 'image/jpeg', 'image/jpg'];
+                const maxSize = 5 * 1024 * 1024; // 5MB
+
+                if (!file) {
+                    e.preventDefault();
+                    alert('Please select an image file.');
+                    return;
+                }
+
+                if (!allowedTypes.includes(file.type)) {
+                    e.preventDefault();
+                    alert('Only PNG, JPG, or JPEG files are allowed.');
+                    return;
+                }
+
+                if (file.size > maxSize) {
+                    e.preventDefault();
+                    alert('File size exceeds 5MB limit.');
+                    return;
+                }
+
+                // Show loading state
+                submitButton.disabled = true;
+                submitButton.classList.add('loading');
+                submitButton.textContent = 'Uploading...';
+            });
+
+            // Reset button state on form reset
+            form.addEventListener('reset', () => {
+                submitButton.disabled = false;
+                submitButton.classList.remove('loading');
+                submitButton.textContent = 'Upload and Segment';
+                previewImg.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
